@@ -35,7 +35,8 @@ kind: Ingress
 metadata:
   name: minimal-ingress
   annotations:
-    nginx.ingress.kubernetes.io/rewrite-target: /
+    alb.ingress.kubernetes.io/target-type: 'ip'
+    alb.ingress.kubernetes.io/scheme: 'internet-facing'
 spec:
   ingressClassName: alb
   rules:
