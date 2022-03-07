@@ -1,3 +1,4 @@
+
 module "cognito_user_pool" {
   source  = "mineiros-io/cognito-user-pool/aws"
   version = "~> 0.9.0"
@@ -34,7 +35,8 @@ module "cognito_user_pool" {
   invite_email_message = "Hi {username}, your temporary password is '{####}'."
   invite_sms_message   = "Hi {username}, your temporary password is '{####}'."
 
-  domain                = var.prefix
+  domain                = "mn-ook.baseplatform2.irondev.io"
+  certificate_arn       = "arn:aws:acm:us-east-1:442507722261:certificate/8b40edb5-c7b4-47ce-85be-0718ba3ad94e"
   default_email_option  = "CONFIRM_WITH_LINK"
   email_subject_by_link = "Your Verification Link"
   email_message_by_link = "Please click the link below to verify your email address. {##Verify Email##}."
@@ -79,6 +81,12 @@ module "cognito_user_pool" {
       max_length               = 40
     },
     {
+      name = "user_type"
+      type = "String"
+      min_length               = 0
+      max_length               = 40
+    },
+    {
       name = "last_seen"
       type = "DateTime"
     }
@@ -91,27 +99,26 @@ module "cognito_user_pool" {
   ]
 
   default_client_read_attributes        = ["email", "email_verified", "preferred_username"]
+  default_client_access_token_validity  = 60
   default_client_allowed_oauth_scopes   = ["email", "openid"]
   default_client_allowed_oauth_flows    = ["code", "implicit"]
 #  default_client_callback_urls          = [aws_api_gateway_deployment.apigw.invoke_url, "${aws_api_gateway_deployment.apigw.invoke_url}/callback"]
 #  default_client_default_redirect_uri   = "${aws_api_gateway_deployment.apigw.invoke_url}/callback"
   default_client_callback_urls          = ["http://localhost"]
   default_client_default_redirect_uri   = "http://localhost"
+  default_client_explicit_auth_flows    = ["ALLOW_CUSTOM_AUTH", "ALLOW_REFRESH_TOKEN_AUTH", "ALLOW_USER_SRP_AUTH", "ALLOW_USER_PASSWORD_AUTH"]
   default_client_generate_secret        = true
+  default_client_id_token_validity      = 60
   default_client_refresh_token_validity = 45
   default_client_allowed_oauth_flows_user_pool_client = true
   default_client_supported_identity_providers = ["COGNITO"]
+  default_client_token_validity_units = {
+    refresh_token = "days"
+    access_token  = "minutes"
+    id_token      = "minutes"
+  }
 
   tags = {
     environment = var.prefix
   }
 }
-
-#
-#resource "aws_cognito_user_pool_client" "ap_client" {
-#  name = format("%s-app-client", var.prefix)
-#
-#  user_pool_id = module.cognito_user_pool.user_pool.id
-#
-#}
-#
