@@ -37,6 +37,8 @@ metadata:
   annotations:
     alb.ingress.kubernetes.io/target-type: 'ip'
     alb.ingress.kubernetes.io/scheme: 'internet-facing'
+    alb.ingress.kubernetes.io/auth-type: 'cognito'
+    alb.ingress.kubernetes.io/auth-idp-cognito: '{"userPoolARN":"arn:aws:cognito-idp:us-east-1:442507722261:userpool/us-east-1_58Z01Uv1o","userPoolClientID":"1l14fu00lghu6jijo79lb3uf5e","userPoolDomain":"mn-test"}'
 spec:
   ingressClassName: alb
   rules:
