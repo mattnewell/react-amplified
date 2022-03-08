@@ -15,6 +15,7 @@ spec:
       containers:
       - name: go-echo
         image: dycsail/go-echo:latest
+        imagePullPolicy: Always
         ports:
         - containerPort: 38001
 ---
@@ -38,7 +39,8 @@ metadata:
     alb.ingress.kubernetes.io/target-type: 'ip'
     alb.ingress.kubernetes.io/scheme: 'internet-facing'
     alb.ingress.kubernetes.io/auth-type: 'cognito'
-    alb.ingress.kubernetes.io/auth-idp-cognito: '{"userPoolARN":"arn:aws:cognito-idp:us-east-1:442507722261:userpool/us-east-1_58Z01Uv1o","userPoolClientID":"1l14fu00lghu6jijo79lb3uf5e","userPoolDomain":"mn-test"}'
+    alb.ingress.kubernetes.io/auth-idp-cognito: '{"userPoolARN":"arn:aws:cognito-idp:us-east-2:442507722261:userpool/us-east-2_kyxvlm7s8","userPoolClientID":"o8ned9b7gdmcu9qhth0bmelkp","userPoolDomain":"auth.baseplatform2.irondev.io"}'
+    alb.ingress.kubernetes.io/certificate-arn: 'arn:aws:acm:us-east-2:442507722261:certificate/b98ca09a-e55b-4cfc-a565-92a736a26320'
 spec:
   ingressClassName: alb
   rules:

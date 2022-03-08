@@ -16,9 +16,15 @@ func homeHandler(w http.ResponseWriter, r *http.Request) {
 	}
 	w.Header().Set("Content-Type", "text/plain")
 	w.WriteHeader(http.StatusOK)
-	_, _ = fmt.Fprintf(w, "Hello, %s!\n", r.UserAgent())
+	//_, _ = fmt.Fprintf(w, "Hello, %s!\n", r.UserAgent())
 	_, _ = fmt.Fprintf(w, "I'm running on %s/%s.\n", myOS, myArch)
 	_, _ = fmt.Fprintf(w, "I'm running %s of a container.\n", inContainer)
+	for key, element := range r.Header {
+		fmt.Fprintf(w, "%s:%s\n", key, element)
+	}
+	for _, c := range r.Cookies() {
+		fmt.Fprintf(w, "%s:%s\n", c.Name, c.Value)
+	}
 }
 func main() {
 	http.HandleFunc("/", homeHandler)
